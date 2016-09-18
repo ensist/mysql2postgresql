@@ -12,11 +12,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mysql2Postgres {
+public class Mysql2Postgresql {
 
     int SPLIT_RECORD = 30000;
 
-    public Mysql2Postgres() throws SQLException {
+    public Mysql2Postgresql() throws SQLException {
         List<String> listDoneTable = new ArrayList<>();
         for (String table : IO.readFile("success.txt").split("\n")) {
             listDoneTable.add(table);
@@ -76,7 +76,7 @@ public class Mysql2Postgres {
                     if (rs.getString(i) == null) {
                         sql.append("null");
                     } else {
-                        sql.append("'").append(convertToPostgres(rs.getString(i))).append("'");
+                        sql.append("'").append(convertToPostgresql(rs.getString(i))).append("'");
                     }
                 }
                 sql.append(")");
@@ -117,13 +117,13 @@ public class Mysql2Postgres {
         IO.write("success.txt", table, true);
     }
 
-    String convertToPostgres(String value) {
+    String convertToPostgresql(String value) {
         value = value.replaceAll("'", "''");
         value = value.replaceAll("" + (char) 0, " ");
         return value;
     }
 
     public static void main(String[] args) throws SQLException {
-        new Mysql2Postgres();
+        new Mysql2Postgresql();
     }
 }
